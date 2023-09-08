@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Sheets Form</title>
+</head>
+<body>
+    <form id="data-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="mobile">Mobile Number:</label>
+        <input type="tel" id="mobile" name="mobile" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        document.getElementById("data-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            fetch("/submit-data", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: { "Content-Type": "application/json" },
+            }).then(response => {
+                if (response.status === 200) {
+                    alert("Data added to Google Sheets successfully.");
+                } else {
+                    alert("Error adding data to Google Sheets.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
